@@ -1,4 +1,3 @@
-
 <div class="app-shell">
   <header class="topbar">
     <a class="brand" routerLink="/products" aria-label="Modern Store, inicio">
@@ -14,6 +13,34 @@
       >
         Catálogo
       </a>
+
+      <a
+        routerLink="/cart"
+        routerLinkActive="navigation__link--active"
+      >
+        Carrito
+        <span class="cart-badge">{{ cart.totalItems() }}</span>
+      </a>
+
+      @if (auth.isAuthenticated()) {
+        <a
+          routerLink="/admin"
+          routerLinkActive="navigation__link--active"
+        >
+          Administración
+        </a>
+
+        <button class="navigation__logout" type="button" (click)="logout()">
+          Salir
+        </button>
+      } @else {
+        <a
+          routerLink="/login"
+          routerLinkActive="navigation__link--active"
+        >
+          Acceso admin
+        </a>
+      }
     </nav>
 
     <span class="topbar__tag">ONLINE STORE</span>
