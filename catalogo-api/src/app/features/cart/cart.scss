@@ -210,8 +210,10 @@
     height: 90px;
   }
 
-  .cart-item__actions {
+    .cart-item__actions {
     grid-column: 2;
     display: flex;
     align-items: center;
-    justify-content: space
+    justify-content: space-between;
+  }
+}
