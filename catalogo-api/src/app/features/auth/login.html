@@ -1,0 +1,48 @@
+<section class="login-page">
+  <form class="login-card" [formGroup]="form" (ngSubmit)="submit()">
+    <p class="login-card__eyebrow">ZONA PRIVADA</p>
+    <h1>Iniciar sesión</h1>
+    <p class="login-card__description">
+      Accede al panel de administración de Modern Store.
+    </p>
+
+    <label for="username">Usuario</label>
+    <input
+      id="username"
+      type="text"
+      formControlName="username"
+      autocomplete="username"
+      required
+    />
+
+    @if (form.controls.username.touched && form.controls.username.invalid) {
+      <p class="field-error">Introduce tu usuario.</p>
+    }
+
+    <label for="password">Contraseña</label>
+    <input
+      id="password"
+      type="password"
+      formControlName="password"
+      autocomplete="current-password"
+      required
+    />
+
+    @if (form.controls.password.touched && form.controls.password.invalid) {
+      <p class="field-error">Introduce tu contraseña.</p>
+    }
+
+    @if (error()) {
+      <p class="login-error" role="alert">{{ error() }}</p>
+    }
+
+    <button type="submit">Entrar</button>
+
+    <p class="login-card__demo">
+      Prueba: usuario <strong>admin</strong>, contraseña
+      <strong>admin123</strong>.
+    </p>
+
+    <a routerLink="/products">Volver a la tienda</a>
+  </form>
+</section>
