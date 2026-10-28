@@ -24,6 +24,7 @@ import { PricePipe } from '../../shared/pipes/price.pipe';
 
 @Component({
   selector: 'app-product-detail',
+  standalone: true,
   imports: [AsyncPipe, RouterLink, PricePipe],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.scss',
@@ -50,14 +51,13 @@ export class ProductDetail {
       }
 
       return this.productService.getProductById(id).pipe(
-        map((product) => product as Product | null),
-        catchError((error: unknown) => {
-          console.error('Error cargando el producto:', error);
+        catchError((err: unknown) => {
+          console.error('Error cargando el producto:', err);
           this.error.set('No se ha podido encontrar este producto.');
           return of(null);
         }),
-        startWith(null),
         finalize(() => this.loading.set(false)),
+        startWith(null),
       );
     }),
     shareReplay({ bufferSize: 1, refCount: true }),
