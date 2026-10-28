@@ -1,0 +1,49 @@
+
+<section class="catalog">
+  <header class="catalog__header">
+    <div>
+      <p class="catalog__eyebrow">TU TIENDA ONLINE</p>
+      <h1>Descubre nuestros productos</h1>
+      <p class="catalog__description">
+        Encuentra tu próximo favorito entre nuestra selección.
+      </p>
+    </div>
+  </header>
+
+  @if (products$ | async; as products) {
+    @if (loading()) {
+      <div class="catalog__status" role="status">
+        <span class="catalog__spinner" aria-hidden="true"></span>
+        <p>Cargando productos...</p>
+      </div>
+    } @else if (error()) {
+      <div class="catalog__status catalog__status--error" role="alert">
+        <h2>¡Vaya! Algo ha fallado</h2>
+        <p>{{ error() }}</p>
+        <button type="button" class="catalog__retry" (click)="retry()">
+          Volver a intentarlo
+        </button>
+      </div>
+    } @else if (products.length > 0) {
+      <p class="catalog__count">
+        {{ products.length }} productos disponibles
+      </p>
+
+      <div class="catalog__grid">
+        @for (product of products; track product.id) {
+          <app-product-card [product]="product" />
+        } @empty {
+          <p>No hay productos disponibles.</p>
+        }
+      </div>
+    } @else {
+      <div class="catalog__status">
+        <h2>Catálogo vacío</h2>
+        <p>No hay productos para mostrar en este momento.</p>
+        <button type="button" class="catalog__retry" (click)="retry()">
+          Actualizar catálogo
+        </button>
+      </div>
+    }
+  }
+</section>
