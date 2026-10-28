@@ -1,0 +1,110 @@
+<section class="create-page">
+  <a class="create-page__back" routerLink="/admin">
+    ← Volver a administración
+  </a>
+
+  <header class="create-page__header">
+    <p class="create-page__eyebrow">ADMINISTRACIÓN</p>
+    <h1>Crear producto</h1>
+    <p>Añade un producto con sus datos y su imagen.</p>
+  </header>
+
+  <form class="product-form" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="form-field">
+      <label for="title">Nombre del producto</label>
+      <input
+        id="title"
+        type="text"
+        formControlName="title"
+        maxlength="120"
+        placeholder="Ej. Auriculares inalámbricos"
+      />
+
+      @if (form.controls.title.touched && form.controls.title.invalid) {
+        <p class="form-field__error">
+          @if (form.controls.title.hasError('required') ||
+               form.controls.title.hasError('blank')) {
+            El nombre es obligatorio.
+          } @else {
+            El nombre no puede superar los 120 caracteres.
+          }
+        </p>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="description">Descripción</label>
+      <textarea
+        id="description"
+        formControlName="description"
+        rows="5"
+        maxlength="2000"
+        placeholder="Describe las características del producto"
+      ></textarea>
+
+      @if (
+        form.controls.description.touched &&
+        form.controls.description.invalid
+      ) {
+        <p class="form-field__error">
+          La descripción es obligatoria y no puede superar los 2000 caracteres.
+        </p>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="price">Precio (€)</label>
+      <input
+        id="price"
+        type="number"
+        formControlName="price"
+        min="0.01"
+        step="0.01"
+        placeholder="19.99"
+      />
+
+      @if (form.controls.price.touched && form.controls.price.invalid) {
+        <p class="form-field__error">
+          Introduce un precio superior a cero.
+        </p>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="category">Categoría</label>
+      <select id="category" formControlName="category">
+        @for (category of categories; track category.value) {
+          <option [value]="category.value">{{ category.label }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="form-field">
+      <label for="image">URL de la imagen</label>
+      <input
+        id="image"
+        type="url"
+        formControlName="image"
+        placeholder="https://ejemplo.com/imagen.jpg"
+      />
+
+      @if (form.controls.image.touched && form.controls.image.invalid) {
+        <p class="form-field__error">
+          Introduce una URL válida que comience por http:// o https://.
+        </p>
+      }
+    </div>
+
+    @if (error()) {
+      <p class="form-error" role="alert">{{ error() }}</p>
+    }
+
+    <div class="product-form__actions">
+      <a class="button button--secondary" routerLink="/admin">Cancelar</a>
+
+      <button class="button" type="submit" [disabled]="submitting()">
+        {{ submitting() ? 'Creando...' : 'Crear producto' }}
+      </button>
+    </div>
+  </form>
+</section>
