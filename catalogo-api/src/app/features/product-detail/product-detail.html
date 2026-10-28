@@ -1,0 +1,53 @@
+<section class="detail">
+  <a class="detail__back" routerLink="/products">
+    ← Volver al catálogo
+  </a>
+
+  @if (product$ | async; as product) {
+    @if (loading()) {
+      <p role="status">Cargando producto...</p>
+    } @else {
+      <article class="detail__layout">
+        <div class="detail__image-panel">
+          <img [src]="product.image" [alt]="product.title" />
+        </div>
+
+        <div class="detail__information">
+          <span class="detail__category">{{ product.category }}</span>
+          <h1>{{ product.title }}</h1>
+
+          @if (product.rating; as rating) {
+            <p class="detail__rating">
+              ★ {{ rating.rate }} / 5
+              <span>({{ rating.count }} opiniones)</span>
+            </p>
+          }
+
+          <p class="detail__description">{{ product.description }}</p>
+
+          <p class="detail__price">{{ product.price | price }}</p>
+
+          <button
+            class="detail__button"
+            type="button"
+            (click)="addToCart(product)"
+          >
+            Añadir al carrito
+          </button>
+        </div>
+      </article>
+    }
+  } @else {
+    @if (loading()) {
+      <div class="detail__status" role="status">
+        Cargando producto...
+      </div>
+    } @else {
+      <div class="detail__status" role="alert">
+        <h1>No se puede mostrar el producto</h1>
+        <p>{{ error() ?? 'El producto no existe.' }}</p>
+        <a routerLink="/products">Volver al catálogo</a>
+      </div>
+    }
+  }
+</section>
