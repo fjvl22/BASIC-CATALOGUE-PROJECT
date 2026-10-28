@@ -1,0 +1,96 @@
+<section class="cart-page">
+  <header class="cart-page__header">
+    <p class="cart-page__eyebrow">TU COMPRA</p>
+    <h1>Mi carrito</h1>
+    <p>Revisa los productos que has seleccionado.</p>
+  </header>
+
+  @if (cart.items().length === 0) {
+    <div class="cart-empty">
+      <span class="cart-empty__icon" aria-hidden="true">🛍</span>
+      <h2>Tu carrito está vacío</h2>
+      <p>Explora el catálogo y añade algo que te guste.</p>
+      <a class="cart-button" routerLink="/products">Ir al catálogo</a>
+    </div>
+  } @else {
+    <div class="cart-layout">
+      <div class="cart-items">
+        @for (item of cart.items(); track item.product.id) {
+          <article class="cart-item">
+            <img
+              class="cart-item__image"
+              [src]="item.product.image"
+              [alt]="item.product.title"
+            />
+
+            <div class="cart-item__details">
+              <h2>{{ item.product.title }}</h2>
+              <p>{{ item.product.price | price }} por unidad</p>
+
+              <div class="cart-item__quantity">
+                <button
+                  type="button"
+                  [attr.aria-label]="'Quitar una unidad de ' + item.product.title"
+                  (click)="cart.decrease(item.product.id)"
+                >
+                  −
+                </button>
+
+                <span>{{ item.quantity }}</span>
+
+                <button
+                  type="button"
+                  [attr.aria-label]="'Añadir una unidad de ' + item.product.title"
+                  (click)="cart.add(item.product)"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div class="cart-item__actions">
+              <strong>{{ item.product.price * item.quantity | price }}</strong>
+              <button
+                class="cart-item__remove"
+                type="button"
+                (click)="cart.remove(item.product.id)"
+              >
+                Eliminar
+              </button>
+            </div>
+          </article>
+        }
+      </div>
+
+      <aside class="cart-summary">
+        <h2>Resumen</h2>
+
+        <div class="cart-summary__row">
+          <span>Unidades</span>
+          <span>{{ cart.totalItems() }}</span>
+        </div>
+
+        <div class="cart-summary__total">
+          <span>Total</span>
+          <strong>{{ cart.totalPrice() | price }}</strong>
+        </div>
+
+        <p class="cart-summary__note">
+          Este proyecto no procesa pagos reales.
+        </p>
+
+        <button
+          class="cart-button cart-button--secondary"
+          type="button"
+          (click)="cart.clear()"
+        >
+          Vaciar carrito
+        </button>
+
+        <a class="cart-button" routerLink="/products">
+          Seguir comprando
+        </a>
+      </aside>
+    </div>
+  }
+</section>
