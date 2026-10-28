@@ -1,1 +1,0 @@
-falta crear el test del formulario de creacion de productos en la carpeta correspondiente
