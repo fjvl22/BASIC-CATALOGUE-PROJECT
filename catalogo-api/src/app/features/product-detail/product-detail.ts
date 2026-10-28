@@ -13,6 +13,7 @@ import {
   map,
   of,
   shareReplay,
+  startWith,
   switchMap,
 } from 'rxjs';
 
@@ -23,6 +24,7 @@ import { PricePipe } from '../../shared/pipes/price.pipe';
 
 @Component({
   selector: 'app-product-detail',
+  standalone: true,
   imports: [AsyncPipe, RouterLink, PricePipe],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.scss',
@@ -55,6 +57,7 @@ export class ProductDetail {
           return of(null);
         }),
         finalize(() => this.loading.set(false)),
+        startWith(null),
       );
     }),
     shareReplay({ bufferSize: 1, refCount: true }),
