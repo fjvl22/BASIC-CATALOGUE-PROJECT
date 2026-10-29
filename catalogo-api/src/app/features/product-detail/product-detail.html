@@ -10,12 +10,12 @@
         <p>{{ state.message }}</p>
         <a routerLink="/products">Volver al catálogo</a>
       </div>
-    } @else if (state.status === 'not found') {
+    } @else if (state.status === 'not-found') {
       <div class="detail__status" role="alert">
         <h1>Producto no encontrado</h1>
         <a routerLink="/products">Volver al catálogo</a>
       </div>
-    } @else {
+    } @else if (state.status === 'success') {
       <article class="detail__layout">
         <div class="detail__image-panel">
           <img [src]="state.product.image" [alt]="state.product.title" />
