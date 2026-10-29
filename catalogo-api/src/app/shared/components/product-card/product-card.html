@@ -1,0 +1,50 @@
+
+<article class="product-card">
+  <a
+    class="product-card__image-link"
+    [routerLink]="['/products', product().id]"
+    [attr.aria-label]="'Ver ' + product().title"
+  >
+    <img
+      class="product-card__image"
+      [src]="product().image"
+      [alt]="product().title"
+      loading="lazy"
+    />
+  </a>
+
+  <div class="product-card__content">
+    <span class="product-card__category">
+      {{ product().category }}
+    </span>
+
+    <h2 class="product-card__title">
+      <a [routerLink]="['/products', product().id]">
+        {{ product().title }}
+      </a>
+    </h2>
+
+    @if (product().rating; as rating) {
+      <p class="product-card__rating">
+        <span aria-hidden="true">★</span>
+        {{ rating.rate }} / 5
+        <span class="product-card__reviews">
+          ({{ rating.count }} opiniones)
+        </span>
+      </p>
+    }
+
+    <div class="product-card__footer">
+      <p class="product-card__price">
+        {{ product().price | currency:'EUR':'symbol':'1.2-2' }}
+      </p>
+
+      <a
+        class="product-card__button"
+        [routerLink]="['/products', product().id]"
+      >
+        Ver producto
+      </a>
+    </div>
+  </div>
+</article>

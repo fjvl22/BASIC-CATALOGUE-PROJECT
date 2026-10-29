@@ -1,0 +1,41 @@
+<section class="admin-page">
+  <header class="admin-header">
+    <div>
+      <p class="admin-header__eyebrow">ZONA PRIVADA</p>
+      <h1>Panel de administración</h1>
+      <p>Gestiona el catálogo de Modern Store.</p>
+    </div>
+
+    <button class="admin-logout" type="button" (click)="logout()">
+      Cerrar sesión
+    </button>
+  </header>
+
+  @if (created) {
+    <p class="admin-success" role="status">
+      La solicitud de creación del producto se ha enviado correctamente.
+    </p>
+  }
+
+  <div class="admin-grid">
+    <article class="admin-card">
+      <span class="admin-card__icon" aria-hidden="true">＋</span>
+      <h2>Crear producto</h2>
+      <p>Añade un producto con nombre, precio, descripción, categoría e imagen.</p>
+      <a routerLink="/admin/products/new">Crear producto</a>
+    </article>
+
+    <article class="admin-card">
+      <span class="admin-card__icon" aria-hidden="true">▦</span>
+      <h2>Ver catálogo</h2>
+      <p>Consulta los productos disponibles en la tienda pública.</p>
+      <a routerLink="/products">Abrir catálogo</a>
+    </article>
+  </div>
+
+  <p class="admin-notice">
+    La API de demostración puede responder a las solicitudes de creación sin
+    guardar permanentemente los productos. Este panel no representa un sistema
+    de administración conectado a una base de datos propia.
+  </p>
+</section>
