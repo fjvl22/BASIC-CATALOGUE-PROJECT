@@ -16,8 +16,8 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
-import { NewProduct } from '../../core/models/product.model';
-import { ProductService } from '../../core/services/product.service';
+import { NewProduct } from '../../../core/models/product.model';
+import { ProductService } from '../../../core/services/product.service';
 
 const notBlank: ValidatorFn = (
   control: AbstractControl,

@@ -54,8 +54,7 @@ describe('ProductCreate', () => {
   });
 
   it('does not submit an empty form', () => {
-    const form = fixture.nativeElement.querySelector('form')
-      as HTMLFormElement;
+    const form = fixture.nativeElement.querySelector('form') as HTMLFormElement;
 
     form.dispatchEvent(
       new Event('submit', { bubbles: true, cancelable: true }),
@@ -111,8 +110,7 @@ describe('ProductCreate', () => {
 
     fixture.detectChanges();
 
-    const form = fixture.nativeElement.querySelector('form')
-      as HTMLFormElement;
+    const form = fixture.nativeElement.querySelector('form') as HTMLFormElement;
 
     form.dispatchEvent(
       new Event('submit', { bubbles: true, cancelable: true }),
