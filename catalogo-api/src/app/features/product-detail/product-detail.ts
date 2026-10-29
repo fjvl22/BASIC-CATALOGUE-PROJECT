@@ -1,26 +1,15 @@
-
-import { AsyncPipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  signal,
-} from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import {
-  catchError,
-  finalize,
-  map,
-  of,
-  shareReplay,
-  startWith,
-  switchMap,
-} from 'rxjs';
+import { AsyncPipe, NgIf } from "@angular/common";
+import { HttpErrorResponse } from "@angular/common/http";
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
+import { ActivatedRoute, RouterLink } from "@angular/router";
+import { catchError, map, of, shareReplay, startWith, switchMap } from "rxjs";
 
 import { Product } from '../../core/models/product.model';
 import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';
 import { PricePipe } from '../../shared/pipes/price.pipe';
+
+type ProductDetailState = | { status: 'loading' } | { status: 'success'; product: Product } | { status: 'error'; message: string } | { status: 'not-found' };
 
 @Component({
   selector: 'app-product-detail',
@@ -35,35 +24,28 @@ export class ProductDetail {
   private readonly productService = inject(ProductService);
   private readonly cartService = inject(CartService);
 
-  readonly loading = signal(true);
-  readonly error = signal<string | null>(null);
-
-  readonly product$ = this.route.paramMap.pipe(
+  readonly state$ = this.route.paramMap.pipe(
     map((params) => Number(params.get('id'))),
-    switchMap((id) => {
-      this.loading.set(true);
-      this.error.set(null);
-
+    switchMap((id): ReturnType<typeof<ProductDetailState>> | ReturnType<typeof this.productService.getProductById> => {
       if (!Number.isInteger(id) || id <= 0) {
-        this.error.set('El identificador del producto no es válido.');
-        this.loading.set(false);
-        return of(null);
+        return of({ status: 'not-found' } as ProductDetailState);
       }
 
       return this.productService.getProductById(id).pipe(
-        catchError((err: unknown) => {
-          console.error('Error cargando el producto:', err);
-          this.error.set('No se ha podido encontrar este producto.');
-          return of(null);
+        map((product): ProductDetailState => product ? { status: 'success', product } : { status: 'not-found' },),
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error cargando el producto: ', error);
+
+          return of({
+            status: 'error',
+            message: 'No se ha podido cargar el producto.',
+          } as ProductDetailState);
         }),
-        finalize(() => this.loading.set(false)),
-        startWith(null),
+        startWith({ status: 'loading' } as ProductDetailState),
       );
     }),
     shareReplay({ bufferSize: 1, refCount: true }),
   );
 
-  addToCart(product: Product): void {
-    this.cartService.add(product);
-  }
+  addToCart(product: Product): void { this.cartService.addToCart(product); }
 }
