@@ -1,10 +1,27 @@
-
-import { describe, expect, it } from 'vitest';
+import { CurrencyPipe, registerLocaleData } from "@angular/common";
+import localeEs from '@angular/common/locales/es';
+import { LOCALE_ID } from "@angular/core";
+import { TestBed } from "@angular/core/testing";
+import { beforeEach, describe, expect, it } from "vitest";
 
 import { PricePipe } from './price.pipe';
 
+registerLocaleData(localeEs);
+
 describe('PricePipe', () => {
-  const pipe = new PricePipe();
+  let pipe: PricePipe;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        PricePipe,
+        CurrencyPipe,
+        { provide: LOCALE_ID, useValue: 'es-ES' },
+      ],
+    });
+
+    pipe = TestBed.inject(PricePipe);
+  });
 
   it('formats a price as euros using Spanish formatting', () => {
     const result = pipe.transform(1234.5);

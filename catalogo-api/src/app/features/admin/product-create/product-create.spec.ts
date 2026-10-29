@@ -1,18 +1,15 @@
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { provideRouter, Router } from "@angular/router";
+import { buffer, of } from "rxjs";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter, Router } from '@angular/router';
-import { of } from 'rxjs';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-
-import { ProductCreate } from './product-create';
-import { ProductService } from '../../../core/services/product.service';
+import { ProductCreate } from "./product-create";
+import { ProductService } from "../../../core/services/product.service";
 
 describe('ProductCreate', () => {
   let fixture: ComponentFixture<ProductCreate>;
   let component: ProductCreate;
-  let productServiceMock: {
-    createProduct: ReturnType<typeof vi.fn>;
-  };
+  let productServiceMock: { createProduct: ReturnType<typeof vi.fn>; };
   let router: Router;
   let navigateSpy: ReturnType<typeof vi.spyOn>;
 
@@ -24,7 +21,7 @@ describe('ProductCreate', () => {
           title: 'Producto de prueba',
           price: 25,
           description: 'Descripción de prueba',
-          category: 'test',
+          category: "men's clothing",
           image: 'https://example.com/product.png',
         }),
       ),
@@ -49,16 +46,12 @@ describe('ProductCreate', () => {
     fixture.detectChanges();
   });
 
-  it('creates the component successfully', () => {
-    expect(component).toBeTruthy();
-  });
+  it('creates the component successfully', () => { expect(component).toBeTruthy(); });
 
   it('does not submit an empty form', () => {
-    const form = fixture.nativeElement.querySelector('form') as HTMLFormElement;
+    const form = fixture.nativeElement.querySelector('form',) as HTMLFormElement;
 
-    form.dispatchEvent(
-      new Event('submit', { bubbles: true, cancelable: true }),
-    );
+    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }),);
 
     fixture.detectChanges();
 
@@ -66,21 +59,16 @@ describe('ProductCreate', () => {
   });
 
   it('marks required fields as invalid when they are empty', () => {
-    // Ajusta estos nombres si tus formControlName son diferentes.
-    const titleInput = fixture.nativeElement.querySelector(
-      '[formControlName="title"]',
-    ) as HTMLInputElement;
+    const titleInput = fixture.nativeElement.querySelector('[formControlName="title"]',) as HTMLInputElement;
 
     expect(titleInput).toBeTruthy();
 
     titleInput.value = '';
-    titleInput.dispatchEvent(new Event('input'));
+    titleInput.dispatchEvent(new Event('input', { bubbles: true }));
 
     fixture.detectChanges();
 
-    expect(
-      titleInput.classList.contains('ng-invalid'),
-    ).toBe(true);
+    expect(titleInput.classList.contains('ng-invalid')).toBe(true);
   });
 
   it('submits valid product data and navigates to admin', () => {
@@ -88,33 +76,27 @@ describe('ProductCreate', () => {
       title: 'Producto de prueba',
       price: '25',
       description: 'Descripción de prueba',
-      category: 'test',
+      category: "men's clothing",
       image: 'https://example.com/product.png',
     };
 
     for (const [name, value] of Object.entries(values)) {
-      const input = fixture.nativeElement.querySelector(
-        `[formControlName="${name}"]`,
-      ) as HTMLInputElement | HTMLTextAreaElement | null;
+      const input = fixture.nativeElement.querySelector(`[formControlName="${name}"]`,) as HTMLInputElement | HTMLTextAreaElement | null;
 
       if (!input) {
-        throw new Error(
-          `No se encontró el control del formulario: ${name}`,
-        );
+        throw new Error(`No se encontró el control del formulario: ${name}`,);
       }
 
       input.value = value;
       input.dispatchEvent(new Event('input', { bubbles: true }));
-      input.dispatchEvent(new Event('blur'));
+      input.dispatchEvent(new Event('blur', { bubbles: true }));
     }
 
     fixture.detectChanges();
 
     const form = fixture.nativeElement.querySelector('form') as HTMLFormElement;
 
-    form.dispatchEvent(
-      new Event('submit', { bubbles: true, cancelable: true }),
-    );
+    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }),);
 
     fixture.detectChanges();
 
@@ -122,7 +104,7 @@ describe('ProductCreate', () => {
       title: 'Producto de prueba',
       price: 25,
       description: 'Descripción de prueba',
-      category: 'test',
+      category: "men's clothing",
       image: 'https://example.com/product.png',
     });
 
