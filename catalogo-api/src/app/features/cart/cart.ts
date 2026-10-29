@@ -11,6 +11,4 @@ import { PricePipe } from '../../shared/pipes/price.pipe';
   styleUrl: './cart.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Cart {
-  readonly cart = inject(CartService);
-}
+export class Cart { readonly cart = inject(CartService); }
