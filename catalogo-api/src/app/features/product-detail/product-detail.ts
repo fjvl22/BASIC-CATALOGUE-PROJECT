@@ -26,26 +26,26 @@ export class ProductDetail {
 
   readonly state$ = this.route.paramMap.pipe(
     map((params) => Number(params.get('id'))),
-    switchMap((id): ReturnType<typeof<ProductDetailState>> | ReturnType<typeof this.productService.getProductById> => {
+    switchMap((id) => {
       if (!Number.isInteger(id) || id <= 0) {
-        return of({ status: 'not-found' } as ProductDetailState);
+        return of<ProductDetailState>({ status: 'not-found' });
       }
 
       return this.productService.getProductById(id).pipe(
         map((product): ProductDetailState => product ? { status: 'success', product } : { status: 'not-found' },),
         catchError((error: HttpErrorResponse) => {
-          console.error('Error cargando el producto: ', error);
+          console.error('Error cargando el producto:', error);
 
-          return of({
+          return of<ProductDetailState>({
             status: 'error',
             message: 'No se ha podido cargar el producto.',
-          } as ProductDetailState);
+          });
         }),
-        startWith({ status: 'loading' } as ProductDetailState),
+        startWith<ProductDetailState>({ status: 'loading' }),
       );
     }),
     shareReplay({ bufferSize: 1, refCount: true }),
   );
 
-  addToCart(product: Product): void { this.cartService.addToCart(product); }
+  addToCart(product: Product): void { this.cartService.add(product); }
 }
